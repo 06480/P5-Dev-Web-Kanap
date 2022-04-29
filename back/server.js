@@ -43,10 +43,3 @@ server.on('listening', () => {
 });
 
 server.listen(port);
-
-
-
-
-
-let elt = index.getElementsById('items')
-elt.innerHTML = "<ul><li>Elément 1</li><li>Elément 2</li></ul>";
