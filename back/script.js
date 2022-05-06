@@ -59,6 +59,7 @@
         cloneElt.getElementById("imgkanap").src = product.imageUrl
         cloneElt.getElementById("productName").textContent = product.name
         cloneElt.getElementById("productDescription").textContent = product.description
+        cloneElt.getElementById("product_link").href += `?id=${product._id}`
 
         document.getElementById("limitedWidthBlock").appendChild(cloneElt)
       }
