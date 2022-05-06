@@ -1,5 +1,6 @@
 (async function() {
     const productId = getProductId()
+    console.log(productId)
     const product = await getProduct(productId)
     displayProduct(product)
 })()
@@ -9,7 +10,7 @@ function getProductId() {
 }
 
 function getProduct(productId){
-    return fetch('http://localhost:3000/api/products/${productId}')
+    return fetch(`http://localhost:3000/api/products/${productId}`)
         .then(function(httpBodyResponse) {
             return httpBodyResponse.json()
         })
@@ -22,5 +23,9 @@ function getProduct(productId){
 }
 
 function displayProduct(product){
-    
+    document.getElementById("title").textContent = product.name
+    document.getElementById("price").textContent = product.price
+    document.getElementById("productImg").src = product.imageUrl
+    document.getElementById("description").textContent = product.description
+    // document.getElementById("colors").textContent = product.colors
 }
