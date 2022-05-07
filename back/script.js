@@ -33,8 +33,7 @@
     
     (async function(){
         const products = await getProducts()
-       
-        for (product of products){
+         for (product of products){
             displayProducts(product)
         }
     })()
