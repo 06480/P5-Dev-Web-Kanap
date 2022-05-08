@@ -1,6 +1,5 @@
 (async function() {
     const productId = getProductId()
-    console.log(productId)
     const product = await getProduct(productId)
     displayProduct(product)
 })()
@@ -27,12 +26,14 @@ function displayProduct(product){
     document.getElementById("price").textContent = product.price
     document.getElementById("productImg").src = product.imageUrl
     document.getElementById("description").textContent = product.description
-    // document.getElementById("color1").textContent = product.colors[0]
-    document.getElementById("colors").innerHTML = `
-    <option id="color1" value="color">${product.colors[0]}</option>
-    <option id="color2" value="color">${product.colors[1]}</option>
-    <option id="color3" value="color">${product.colors[2]}</option>
-    <option id="color4" value="color">${product.colors[3]}</option>
-    
-    `
+
+    let colorsOptions = '';
+    for(let i = 0; i < product.colors.length; i++){
+        colorsOptions += `<option id="color1" value="color">${product.colors[i]}</option>`
+    }
+    document.getElementById("colors").innerHTML = colorsOptions;
+}
+
+addToCart.onclick = () =>{
+    localStorage.setItem("nom", price.value)
 }
