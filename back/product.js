@@ -31,7 +31,7 @@ function displayProduct(product){
 
     let colorsOptions = '';
     for(let i = 0; i < product.colors.length; i++){
-        colorsOptions += `<option id="color1" value="color">${product.colors[i]}</option>`;
+        colorsOptions += `<option id="color1" value="${product.colors[i]}">${product.colors[i]}</option>`;
     };
     document.getElementById("colors").innerHTML = colorsOptions;
     document.getElementById("item__content__addButton").innerHTML = `
@@ -44,11 +44,25 @@ function displayProduct(product){
 function addBastket(product){
     let button = document.getElementById(product._id);
     button.addEventListener("click", () => {
-        let productTable = JSON.parse(localStorage.getItem("produit"))
+        let productTable = JSON.parse(localStorage.getItem("produit"));
         let options = document.getElementById("colors");
-        console.log(productTable)
-    })
-}
+        
+        let colorChoice = Object.assign({}, product, {
+            color: `${options.value}`,
+            quantite: 1,
+        });
+        
+        if(productTable == null){
+            productTable = [];
+            productTable.push(colorChoice);
+            console.log(productTable)
+            localStorage.setItem("product", JSON.stringify(productTable))
+        }
+
+        
+    });
+    
+};
 
 
 
