@@ -46,17 +46,18 @@ function addBastket(product){
     button.addEventListener("click", () => {
         let productTable = JSON.parse(localStorage.getItem("produit"));
         let options = document.getElementById("colors");
+        let itemQuantity = document.getElementById('quantity');
         
         let colorChoice = Object.assign({}, product, {
             color: `${options.value}`,
-            quantite: 1,
+            quantity: `${itemQuantity.value}`,
         });
         
         if(productTable == null){
             productTable = [];
             productTable.push(colorChoice);
-            console.log(productTable)
-            localStorage.setItem("product", JSON.stringify(productTable))
+            console.log(productTable);
+            localStorage.setItem("product", JSON.stringify(productTable));
         }
 
         
