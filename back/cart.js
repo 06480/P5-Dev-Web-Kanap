@@ -7,7 +7,8 @@ const displayBasket = async () => {
     await Basket;
     console.log('ok', Basket)
     
-    cart__items.innerHTML = Basket.map((product) =>` <article class="cart__item" data-id="{product-ID}" data-color="{product-color}">
+    cart__items.innerHTML = Basket.map((product) =>` 
+    <article class="cart__item" data-id="{product-ID}" data-color="{product-color}">
     <div class="cart__item__img">
       <img src="${product.imageUrl}" id="productIMG" alt="Photographie d'un ${product.name}">
     </div>
@@ -23,12 +24,15 @@ const displayBasket = async () => {
           <input type="number" change="change($event)" class="itemQuantity" name="itemQuantity" min="1" max="100" value="${product.quantity}">
         </div>
         <div class="cart__item__content__settings__delete">
-          <p class="deleteItem">Supprimer</p>
+          <p class="deleteItem" data-id="${product._id} data-color="${product.color}">Supprimer</p>
         </div>
       </div>
     </div>
   </article>
-    
+    `)
+
+    cart__price.innerHTML = Basket.map((product) => `
+    <p>Total (<span id="totalQuantity">${product.quantity}</span> articles) : <span id="totalPrice">${product.quantity * product.price}</span> €</p>
     `)
     
    

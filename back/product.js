@@ -56,12 +56,23 @@ function addBastket(product){
         if(productTable == null){
             productTable = [];
             productTable.push(colorChoice);
-            console.log(productTable);
+            console.log('y', productTable);
             localStorage.setItem("product", JSON.stringify(productTable));
+        } else if (productTable != null){
+            for (i = 0; i < productTable.length; i++){
+                console.log("test");
+                if(productTable[i]._id == product._id && productTable[i].color == options.value){
+                 return(
+                     productTable[i].quantity++,
+                     console.log("quantity++"),
+                     localStorage.setItem("product",JSON.stringify(productTable)),
+                     (productTable = JSON.parse(localStorage.getItem("product")))
+                 );
+                }
+            }
         }
-
-        
     });
+    return (productTable = JSON.parse(localStorage.getItem("product")));
     
 };
 
