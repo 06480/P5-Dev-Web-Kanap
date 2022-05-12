@@ -59,8 +59,8 @@ function addBastket(product){
             console.log('y', productTable);
             localStorage.setItem("product", JSON.stringify(productTable));
         } else if (productTable != null){
+            console.log("test")
             for (i = 0; i < productTable.length; i++){
-                console.log("test");
                 if(productTable[i]._id == product._id && productTable[i].color == options.value){
                  return(
                      productTable[i].quantity++,
@@ -70,15 +70,19 @@ function addBastket(product){
                  );
                 }
             }
+            for (i = 0; i < productTable.length; i++){
+                if((productTable[i]._id === product._id && productTable[i].color !== options.value) || productTable[i]._id !== product._id){
+                    return(
+                        console.log("new"),
+                        productTable.push(colorChoice),
+                        localStorage.setItem("product",JSON.stringify(productTable)),
+                        (productTable = JSON.parse(localStorage.getItem("product")))
+                        
+                    );
+                };
+            };
         }
     });
     return (productTable = JSON.parse(localStorage.getItem("product")));
     
 };
-
-
-
-
-// addToCart.onclick = () =>{
-//     localStorage.setItem("nom", price.value)
-// }

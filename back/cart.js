@@ -29,32 +29,39 @@ const displayBasket = async () => {
       </div>
     </div>
   </article>
-    `)
+    `).join("");
 
     cart__price.innerHTML = Basket.map((product) => `
     <p>Total (<span id="totalQuantity">${product.quantity}</span> articles) : <span id="totalPrice">${product.quantity * product.price}</span> €</p>
-    `)
-    
-   
-
-
+    `).join("");
   }
-
 };
 
 displayBasket();
 
 
+const deleteItem = async (displayBasket) => {
+  await displayBasket;
+  let remove = document.querySelectorAll(".deleteItem");
+  console.log('dacc', remove);
+  remove.forEach((supprimer) => { 
+    supprimer.addEventListener("click",() => {
+      console.log(supprimer);
 
+      let totalBasket = Basket.length;
+      console.log('mort', Basket.length)
 
+      for(i = 0; i < totalBasket; i++){
+        console.log("mort");
+        if(Basket[i].quantity == 1 && totalBasket == 1){
+          return (
+            localStorage.removeItem("product"),
+            (location.href = "cart.html")
+            )
+        }
+      }
+    });
+  });
+};
 
-
-//  function displayBasket(Basket){
-//     console.log('okkkk', Basket)
-   
-//     document.getElementById("title").textContent = Basket.name;
-//     document.getElementById("productIMG").src = Basket.imageUrl;
-       
-
-// };
-// displayBasket(Basket);
+deleteItem();
