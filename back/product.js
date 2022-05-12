@@ -44,7 +44,7 @@ function displayProduct(product){
 function addBastket(product){
     let button = document.getElementById(product._id);
     button.addEventListener("click", () => {
-        let productTable = JSON.parse(localStorage.getItem("produit"));
+        let productTable = JSON.parse(localStorage.getItem("product"));
         let options = document.getElementById("colors");
         let itemQuantity = document.getElementById('quantity');
         
