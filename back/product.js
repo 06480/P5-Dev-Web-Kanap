@@ -4,8 +4,6 @@
     displayProduct(product);   
 })()
 
-// let product = [];
-
 function getProductId() {
     return new URL(location.href).searchParams.get("id");
 }
@@ -52,7 +50,7 @@ function addBastket(product){
             color: `${options.value}`,
             quantity: `${itemQuantity.value}`,
         });
-        
+// Faut-il refaire une fonction ici?
         if(productTable == null){
             productTable = [];
             productTable.push(colorChoice);

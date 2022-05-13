@@ -40,7 +40,7 @@ const displayBasket = async () => {
 displayBasket();
 
 
-const deleteItem = async (displayBasket) => {
+const deleteItems = async (displayBasket) => {
   await displayBasket;
   let remove = document.querySelectorAll(".deleteItem");
   console.log('dacc', remove);
@@ -49,19 +49,20 @@ const deleteItem = async (displayBasket) => {
       console.log(supprimer);
 
       let totalBasket = Basket.length;
-      console.log('mort', Basket.length)
+      console.log('mort', Basket.length);
 
       for(i = 0; i < totalBasket; i++){
-        console.log("mort");
         if(Basket[i].quantity == 1 && totalBasket == 1){
           return (
+            console.log("mort2"),
             localStorage.removeItem("product"),
-            (location.href = "cart.html")
-            )
-        }
-      }
+            (location.href = "index.html")
+           );
+        };
+        // if(Basket[i].quantity == 1 && totalAddProduit!==)
+      };
     });
   });
 };
 
-deleteItem();
+deleteItems();
