@@ -1,8 +1,8 @@
+// const { json } = require("express");
 
 let Basket = JSON.parse(localStorage.getItem('product'));
 
 const displayBasket = async () => {
-  console.log('salut');
   if (Basket) {
     await Basket;
     console.log('ok', Basket)
@@ -49,17 +49,22 @@ const deleteItems = async (displayBasket) => {
       console.log(supprimer);
 
       let totalBasket = Basket.length;
-      console.log('mort', Basket.length);
+      console.log('mort', totalBasket);
 
       for(i = 0; i < totalBasket; i++){
         if(Basket[i].quantity == 1 && totalBasket == 1){
           return (
-            console.log("mort2"),
-            localStorage.removeItem("product"),
-            (location.href = "index.html")
+           localStorage.removeItem("product"),
+            // (location.href = "index.html"),
+            console.log("morty")
            );
         };
-        // if(Basket[i].quantity == 1 && totalAddProduit!==)
+        if(Basket[i].quantity == 1 && totalBasket !== 1){
+          Basket.splice([i], 1);
+          localStorage.setItem("product", JSON.stringify(Basket));
+          // location.href = "cart.html";
+          console.log("moins 1");
+        }
       };
     });
   });
