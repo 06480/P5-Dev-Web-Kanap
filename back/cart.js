@@ -24,7 +24,7 @@ const displayBasket = async () => {
           <input type="number" change="change($event)" class="itemQuantity" name="itemQuantity" min="1" max="100" value="${product.quantity}">
         </div>
         <div class="cart__item__content__settings__delete">
-          <p class="deleteItem" data-id="${product._id} data-color="${product.color}">Supprimer</p>
+          <p class="deleteItem" data-id="${product._id}" data-color="${product.color}">Supprimer</p>
         </div>
       </div>
     </div>
@@ -52,22 +52,38 @@ const deleteItems = async (displayBasket) => {
       console.log('mort', totalBasket);
 
       for(i = 0; i < totalBasket; i++){
-        if(Basket[i].quantity == 1 && totalBasket == 1){
+        if(Basket[i].quantity >= 1 && totalBasket == 1 ){
           return (
            localStorage.removeItem("product"),
-            // (location.href = "index.html"),
+            // (location.href = "cart.html"),
             console.log("morty")
            );
         };
-        if(Basket[i].quantity == 1 && totalBasket !== 1){
+        if(Basket[i].quantity >= 1 && totalBasket != 1 
+          && Basket[i]._id == supprimer.dataset.id 
+          && Basket[i].color == supprimer.dataset.color){
           Basket.splice([i], 1);
           localStorage.setItem("product", JSON.stringify(Basket));
           // location.href = "cart.html";
           console.log("moins 1");
         }
+        // if (Basket[i]._id == supprimer.dataset.id && Basket[i].color == supprimer.dataset.color){
+        //   return (
+        //     Basket[i].quantity++,
+        //     localStorage.setItem("product", JSON.stringify(Basket))
+        //     );
+        // }
       };
     });
   });
 };
 
 deleteItems();
+
+const selectQuantity = document.querySelectorAll(".cart__item__content__settings__quantity");
+
+function getQuantity(){
+selectQuantity.addEventListener("change", (event) => {
+    console.log(event.target.value);
+});
+}
