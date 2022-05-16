@@ -81,39 +81,48 @@ const deleteItems = async (displayBasket) => {
 deleteItems();
 
 // selection de la quantitée du produit
-const selectQuantity = document.querySelectorAll(".cart__item__content__settings__quantity");
-console.log(selectQuantity);
+// const selectQuantity = document.querySelectorAll(".cart__item__content__settings__quantity");
+// console.log(selectQuantity);
 
-function getQuantity(){
-selectQuantity.addEventListener("change", (event) => {
-    console.log(event.value);
-});
-}
+// function getQuantity(){
+// selectQuantity.addEventListener("change", (event) => {
+//     console.log(event.value);
+// });
+// }
 
 // vérification des données du formulaire
 let form = document.getElementById('Form');
 console.log(form)
 
-form.addEventListener('submit', function(e) {
-  console.log(e)
-  let input = document.getElementById('firstName').innerHTML;
+form.addEventListener('submit', () => {
+  let input = document.getElementById('firstName');
   let regex = /^[a-zA-Z-\s]+$/;
+
   
-  if(input.value == ""){
+  
+  // if(input.value == ""){
     
-    let firstNameError = documment.getElementById('firstNameErrorMsg');
-    firstNameError.innerHTML = "Ce champ est requis.";
-    firstNameError.style.color = 'red';
-    e.preventDefault();
+  //   let firstNameError = documment.getElementById('firstNameErrorMsg');
+  //   firstNameError.innerHTML = "Ce champ est requis.";
+  //   firstNameError.style.color = 'red';
+  //   e.preventDefault();
 
-  } else if (regex.test(input.value) == false) {
+  // } else if (regex.test(input.value) == false) {
 
-    let firstNameError = documment.getElementById('firstNameErrorMsg');
-    firstNameError.innerHTML = "Le nom doit comporter uniquement des lettres et des tirets.";
-    firstNameError.style.color = 'red';
-    e.preventDefault();
-  }
-
+  //   let firstNameError = documment.getElementById('firstNameErrorMsg');
+  //   firstNameError.innerHTML = "Le nom doit comporter uniquement des lettres et des tirets.";
+  //   firstNameError.style.color = 'red';
+  //   e.preventDefault();
+  // }
 
 });
 
+//stocker les saisies dans le local Storage
+let btnSendForm = document.getElementById("order")
+
+btnSendForm.addEventListener("click", () => {
+localStorage.setItem("Prénom", document.getElementById("firstname").value);
+
+  console.log(document.getElementById("firstname").value);
+
+});
