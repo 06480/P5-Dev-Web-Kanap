@@ -80,20 +80,23 @@ const deleteItems = async (displayBasket) => {
 
 deleteItems();
 
-// const selectQuantity = document.querySelectorAll(".cart__item__content__settings__quantity");
+// selection de la quantitée du produit
+const selectQuantity = document.querySelectorAll(".cart__item__content__settings__quantity");
+console.log(selectQuantity);
 
-// function getQuantity(){
-// selectQuantity.addEventListener("change", (event) => {
-//     console.log(event.value);
-// });
-// }
+function getQuantity(){
+selectQuantity.addEventListener("change", (event) => {
+    console.log(event.value);
+});
+}
 
+// vérification des données du formulaire
 let form = document.getElementById('Form');
 console.log(form)
 
 form.addEventListener('submit', function(e) {
   console.log(e)
-  let input = document.getElementById('firstName');
+  let input = document.getElementById('firstName').innerHTML;
   let regex = /^[a-zA-Z-\s]+$/;
   
   if(input.value == ""){
