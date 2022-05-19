@@ -59,6 +59,7 @@ const displayBasket = async () => {
             (Basket = JSON.parse(localStorage.getItem("product")));
           }
         } 
+        basketPrice();
       }
     })
   }
@@ -107,13 +108,12 @@ deleteItems();
 
 // calcul du panier
 
-const basketPrice = async () => {
+const basketPrice = () => {
 
   let productPrice = [];
   let productQuantityTotal = [];
 
   let newTable = JSON.parse(localStorage.getItem("product"));
-  // let displayQuantity = document.querySelectorAll(".itemQuantity")
   
   newTable.forEach((product) => {
     productPrice.push(product.price * product.quantity);
@@ -124,6 +124,7 @@ const basketPrice = async () => {
 };
 
 basketPrice();
+
 
 
 
