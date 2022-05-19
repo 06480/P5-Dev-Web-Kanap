@@ -8,9 +8,7 @@ const displayBasket = async () => {
   if (Basket) {
     await Basket;
 
-
-    
-    cart__items.innerHTML = Basket.map((product) =>` 
+    cart__items.innerHTML = Basket.map((product, i) =>` 
     <article class="cart__item" data-id="{product-ID}" data-color="{product-color}">
     <div class="cart__item__img">
       <img src="${product.imageUrl}" id="productIMG" alt="Photographie d'un ${product.name}">
@@ -19,7 +17,7 @@ const displayBasket = async () => {
       <div class="cart__item__content__description">
         <h2 id="title">${product.name}</h2>
         <p>${product.color}</p>
-        <p>${product.price}€</p>
+        <p id="price-${i}">${product.price * product.quantity}€</p>
       </div>
       <div class="cart__item__content__settings">
         <div class="cart__item__content__settings__quantity">
@@ -34,15 +32,21 @@ const displayBasket = async () => {
   </article>
     `).join("");
 
-    const input = document.getElementById('id-input-test');
-    input.addEventListener('input', updateValue);
-    
-    function updateValue(e) {
-      console.log(e.target.value);
-    }
-    cart__price.innerHTML = Basket.map((product) => `
-    <p>Total (<span id="totalQuantity">${product.quantity}</span> articles) : <span id="totalPrice">${input.value * product.price}</span> €</p>
-    `).join("");
+// selection de la quantitée du produit
+
+    let inputs = document.querySelectorAll(".itemQuantity");
+
+    Basket.forEach((product, i)=>{
+      inputs[i].addEventListener('input', updateValue);
+      function updateValue(e) {
+        console.log(inputs)
+          const price = document.getElementById(`price-${i}`);
+          price.innerHTML = `<p id="price-${i}">${product.price * e.target.value}€</p>`;
+          Basket[i].quantity++;
+          localStorage.setItem("product",JSON.stringify(Basket));
+          (Basket = JSON.parse(localStorage.getItem("product")));
+        }
+    })
   }
 
  
@@ -87,9 +91,27 @@ const deleteItems = async (displayBasket) => {
 
 deleteItems();
 
+// calcul du panier
 
-// selection de la quantitée du produit
+const basketPrice = async () => {
 
+  let productPrice = [];
+  let productQuantityTotal = [];
+
+  let newTable = JSON.parse(localStorage.getItem("product"));
+  console.log(newTable)
+  // let displayQuantity = document.querySelectorAll(".itemQuantity")
+  
+  newTable.forEach((product) => {
+    productPrice.push(product.price * product.quantity);
+    productQuantityTotal.push(product.quantity);
+    console.log(productPrice)
+  });
+  totalQuantity.textContent = `${eval(productQuantityTotal.join("+"))}`
+  totalPrice.textContent = `${eval(productPrice.join("+"))}`
+};
+
+basketPrice();
 
 
 
@@ -120,7 +142,7 @@ form.addEventListener('submit', () => {
 
 });
 
-//stocker les saisies dans le local Storage
+//stocker les saisies 
 let btnSendForm = document.getElementById("order")
 
 btnSendForm.addEventListener("click", () => {
