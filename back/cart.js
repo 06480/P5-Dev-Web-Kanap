@@ -39,13 +39,15 @@ const displayBasket = async () => {
     Basket.forEach((product, i)=>{
       inputs[i].addEventListener('input', updateValue);
       function updateValue(e) {
-        console.log(inputs)
           const price = document.getElementById(`price-${i}`);
           price.innerHTML = `<p id="price-${i}">${product.price * e.target.value}€</p>`;
+          // let testPLUS = Basket[i].quantity++;
+          // console.log('ok', Basket[i].quantity++)
+    
           Basket[i].quantity++;
           localStorage.setItem("product",JSON.stringify(Basket));
-          (Basket = JSON.parse(localStorage.getItem("product")));
-        }
+          (Basket = JSON.parse(localStorage.getItem("product"))); 
+      }
     })
   }
 
@@ -99,13 +101,11 @@ const basketPrice = async () => {
   let productQuantityTotal = [];
 
   let newTable = JSON.parse(localStorage.getItem("product"));
-  console.log(newTable)
   // let displayQuantity = document.querySelectorAll(".itemQuantity")
   
   newTable.forEach((product) => {
     productPrice.push(product.price * product.quantity);
     productQuantityTotal.push(product.quantity);
-    console.log(productPrice)
   });
   totalQuantity.textContent = `${eval(productQuantityTotal.join("+"))}`
   totalPrice.textContent = `${eval(productPrice.join("+"))}`
