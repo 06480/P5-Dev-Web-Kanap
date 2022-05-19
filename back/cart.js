@@ -41,12 +41,24 @@ const displayBasket = async () => {
       function updateValue(e) {
           const price = document.getElementById(`price-${i}`);
           price.innerHTML = `<p id="price-${i}">${product.price * e.target.value}€</p>`;
-          // let testPLUS = Basket[i].quantity++;
-          // console.log('ok', Basket[i].quantity++)
-    
-          Basket[i].quantity++;
-          localStorage.setItem("product",JSON.stringify(Basket));
-          (Basket = JSON.parse(localStorage.getItem("product"))); 
+        if(e.target.value > Basket[i].quantity){
+          let newValuePositive = e.target.value - Basket[i].quantity;
+          console.log("+", newValuePositive);
+          Basket[i].quantity = e.target.value;
+          for(j = 0; j < newValuePositive; j++){
+            localStorage.setItem("product",JSON.stringify(Basket));
+            (Basket = JSON.parse(localStorage.getItem("product"))); 
+          }
+        }
+        if(e.target.value < Basket[i].quantity){
+          let newValueNegative = Basket[i].quantity - e.target.value;
+          console.log("-", newValueNegative);
+          Basket[i].quantity = e.target.value;
+          for(j = 0; j < newValueNegative; j++){
+            localStorage.setItem("product",JSON.stringify(Basket));
+            (Basket = JSON.parse(localStorage.getItem("product")));
+          }
+        } 
       }
     })
   }
