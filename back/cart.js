@@ -129,36 +129,29 @@ basketPrice();
 
 
 
-// vérification des données du formulaire
-let form = document.getElementById('Form');
+// // vérification des données du formulaire
+// let form = document.getElementById('Form');
 
-form.addEventListener('submit', () => {
-  let input = document.getElementById('firstName');
-  let regex = /^[a-zA-Z-\s]+$/;
+// form.addEventListener('submit', () => {
+//   let input = document.getElementById('firstName');
+//   let regex = /^[a-zA-Z-\s]+$/;
 
   
   
-  // if(input.value == ""){
-    
-  //   let firstNameError = documment.getElementById('firstNameErrorMsg');
-  //   firstNameError.innerHTML = "Ce champ est requis.";
-  //   firstNameError.style.color = 'red';
-  //   e.preventDefault();
+//  if (regex.test(input.value) == false) {
 
-  // } else if (regex.test(input.value) == false) {
+//     let firstNameError = documment.getElementById('firstNameErrorMsg');
+//     firstNameError.innerHTML = "Le nom doit comporter uniquement des lettres et des tirets.";
+//     firstNameError.style.color = 'red';
+//     e.preventDefault();
+//   }
 
-  //   let firstNameError = documment.getElementById('firstNameErrorMsg');
-  //   firstNameError.innerHTML = "Le nom doit comporter uniquement des lettres et des tirets.";
-  //   firstNameError.style.color = 'red';
-  //   e.preventDefault();
-  // }
-
-});
+// });
 
 //stocker les saisies 
 let btnSendForm = document.getElementById("order")
 
 btnSendForm.addEventListener("click", () => {
-localStorage.setItem("Prénom", document.getElementById("firstname").value);
+localStorage.setItem("Prénom", document.getElementById("Form"));
 
 });
