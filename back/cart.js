@@ -1,6 +1,4 @@
 
-
-
 let Basket = JSON.parse(localStorage.getItem('product'));
 
 
@@ -126,11 +124,81 @@ const basketPrice = () => {
 
 basketPrice();
 
+const inputFirstName = document.getElementById('firstName');
+  const inputLastName = document.getElementById('lastName');
+  const regexNames = /^[a-zA-Z-\s]+$/;
+  const inputAddress = document.getElementById('address');
+  const inputCity = document.getElementById('city');
+  const regexAddress = /^([0-9]*) ?([a-zA-Z,\. ]*)/;
+  const inputEmail = document.getElementById('email');
+  const regexEmail = /^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$/;
+
+  function firstNameControl(){
+    let firstNameError = document.getElementById('firstNameErrorMsg');
+  if(regexNames.test(inputFirstName.value) == false){
+    firstNameError.innerHTML = "Ce champ peut comporter uniquement des lettres et des tirets.";
+    return false;
+    }
+  else{
+    firstNameError.innerHTML = "";
+    console.log('ok');
+    return true;
+    };
+  };
+  function lastNameControl(){
+    let lastNameError = document.getElementById('lastNameErrorMsg');
+  if(regexNames.test(inputLastName.value) == false){
+    lastNameError.innerHTML = "Ce champ peut comporter uniquement des lettres et des tirets.";
+    return false
+    }
+  else{
+    lastNameError.innerHTML = "";
+    console.log('ok1');
+    return true
+    };
+  };
+  function addressControl(){
+    let addressError = document.getElementById('addressErrorMsg');
+  if(regexAddress.test(inputAddress.value) == false){
+    addressError.innerHTML = "Ce champ peut comporter uniquement des chiffres, des lettres et des tirets.";
+    return false
+    }
+  else{
+    addressError.innerHTML= "";
+    console.log('ok2');
+    return true
+    };
+  };
+  function cityControl(){
+    let cityError = document.getElementById('cityErrorMsg');
+  if(regexAddress.test(inputCity.value) == false){
+   cityError.innerHTML = "Ce champ peut comporter uniquement des chiffres, des lettres et des tirets.";
+   return false
+    }
+  else{
+    cityError.innerHTML = "";
+    console.log('ok3');
+    return true
+   };
+  };
+  function emailControl(){
+    let emailError = document.getElementById('emailErrorMsg');
+  if(regexEmail.test(inputEmail.value) == false){
+    emailError.innerHTML = "Cette adresse mail n'est pas valide";
+    return false
+    }
+  else{
+    emailError.innerHTML = "";
+    console.log('ok4');
+    return true
+    };
+  };
 //récupérer et stocker les saisies du formulaire dans le localStorage
 const btnSendForm = document.getElementById("order")
 
-btnSendForm.addEventListener("click", function(e) {
-  
+
+function sendForm(form){
+  form.action = "cart.html";
 //création de l'objet formulaire
   const formValues = {
     Prénom: document.getElementById("firstName").value,
@@ -139,73 +207,14 @@ btnSendForm.addEventListener("click", function(e) {
     Ville: document.getElementById("city").value,
     Email: document.getElementById("email").value,
 }
-  const inputFirstName = document.getElementById('firstName');
-  const inputLastName = document.getElementById('lastName');
-  const regexNames = /^[a-zA-Z-\s]+$/;
-  const inputAddress = document.getElementById('address');
-  const inputCity = document.getElementById('city');
-  const regexAddress = /^[a-zA-Z0-9-\s]+$/;
-  const inputEmail = document.getElementById('email');
-  const regexEmail = /[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$/;
 
-  function firstNameControl(){
-  if(regexNames.test(inputFirstName.value) == false){
-    let firstNameError = document.getElementById('firstNameErrorMsg');
-    firstNameError.innerHTML = "Ce champ peut comporter uniquement des lettres et des tirets.";
-    e.preventDefault;
-    }
-  else{
-    console.log('ok');
-    return true;
-    };
-  };
-  function lastNameControl(){
-  if(regexNames.test(inputLastName.value) == false){
-    let lastNameError = document.getElementById('lastNameErrorMsg');
-    lastNameError.innerHTML = "Ce champ peut comporter uniquement des lettres et des tirets.";
-    e.preventDefault;
-    }
-  else{
-    return true
-    };
-  };
-  function addressControl(){
-  if(regexAddress.test(inputAddress.value) == false){
-    let addressError = document.getElementById('addressErrorMsg');
-    addressError.innerHTML = "Ce champ peut comporter uniquement des chiffres, des lettres et des tirets.";
-    e.preventDefault;
-    }
-  else{
-    return true
-    };
-  };
-  function cityControl(){
-  if(regexAddress.test(inputCity.value) == false){
-   let cityError = document.getElementById('cityErrorMsg');
-   cityError.innerHTML = "Ce champ peut comporter uniquement des chiffres, des lettres et des tirets.";
-   e.preventDefault;
-    }
-  else{
-    return true
-   };
-  };
-  function emailControl(){
-  if(regexEmail.test(inputEmail.value) == false){
-   let emailError = document.getElementById('emailErrorMsg');
-    emailError.innerHTML = "Cette adresse mail n'est pas valide";
-   e.preventDefault;
-    }
-  else{
-    return true
-    };
-  };
-
-
-if(firstNameControl() && lastNameControl() && addressControl() && cityControl() && emailControl() == true){
-localStorage.setItem("Formulaire de contact", JSON.stringify(formValues));
+if(firstNameControl() && lastNameControl() && addressControl() && cityControl() && emailControl()){
+  localStorage.setItem("Formulaire de contact", JSON.stringify(formValues));
+  alert("Votre formulaire a bien été envoyé.");
 }
 else{
-  alert("Veuillez bien remplir le formulaire")
+  alert("Veuillez bien remplir le formulaire");
+  return false;
 }
 
 //création de l'objet (produits+formulaire) à envoyer au serveur
@@ -213,9 +222,37 @@ const sendToServer = {
   Basket,
   formValues,
 }
-console.log('ok',sendToServer)
+console.log('send',sendToServer)
 // localStorage.setItem('Fiche client', JSON.stringify(sendToServer));
-});
+}
+
+
+// btnSendForm.addEventListener("click", function(e) {
+//   e.preventDefault;
+// //création de l'objet formulaire
+//   const formValues = {
+//     Prénom: document.getElementById("firstName").value,
+//     Nom: document.getElementById("lastName").value,
+//     Adresse: document.getElementById("address").value,
+//     Ville: document.getElementById("city").value,
+//     Email: document.getElementById("email").value,
+// }
+
+// if(firstNameControl() && lastNameControl() && addressControl() && cityControl() && emailControl()){
+//   localStorage.setItem("Formulaire de contact", JSON.stringify(formValues));
+// }
+// else{
+//   alert("Veuillez bien remplir le formulaire")
+// }
+
+// //création de l'objet (produits+formulaire) à envoyer au serveur
+// const sendToServer = {
+//   Basket,
+//   formValues,
+// }
+// console.log('send',sendToServer)
+// // localStorage.setItem('Fiche client', JSON.stringify(sendToServer));
+// });
 
 // vérification des données du formulaire
 // let form = document.getElementById('Form');
