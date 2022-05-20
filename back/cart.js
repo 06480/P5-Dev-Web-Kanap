@@ -1,4 +1,5 @@
-// const { json } = require("express");
+
+
 
 let Basket = JSON.parse(localStorage.getItem('product'));
 
@@ -125,33 +126,112 @@ const basketPrice = () => {
 
 basketPrice();
 
+//récupérer et stocker les saisies du formulaire dans le localStorage
+const btnSendForm = document.getElementById("order")
+
+btnSendForm.addEventListener("click", function(e) {
+  
+//création de l'objet formulaire
+  const formValues = {
+    Prénom: document.getElementById("firstName").value,
+    Nom: document.getElementById("lastName").value,
+    Adresse: document.getElementById("address").value,
+    Ville: document.getElementById("city").value,
+    Email: document.getElementById("email").value,
+}
+  const inputFirstName = document.getElementById('firstName');
+  const inputLastName = document.getElementById('lastName');
+  const regexNames = /^[a-zA-Z-\s]+$/;
+  const inputAddress = document.getElementById('address');
+  const inputCity = document.getElementById('city');
+  const regexAddress = /^[a-zA-Z0-9-\s]+$/;
+  const inputEmail = document.getElementById('email');
+  const regexEmail = /[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$/;
+
+  function firstNameControl(){
+  if(regexNames.test(inputFirstName.value) == false){
+    let firstNameError = document.getElementById('firstNameErrorMsg');
+    firstNameError.innerHTML = "Ce champ peut comporter uniquement des lettres et des tirets.";
+    e.preventDefault;
+    }
+  else{
+    console.log('ok');
+    return true;
+    };
+  };
+  function lastNameControl(){
+  if(regexNames.test(inputLastName.value) == false){
+    let lastNameError = document.getElementById('lastNameErrorMsg');
+    lastNameError.innerHTML = "Ce champ peut comporter uniquement des lettres et des tirets.";
+    e.preventDefault;
+    }
+  else{
+    return true
+    };
+  };
+  function addressControl(){
+  if(regexAddress.test(inputAddress.value) == false){
+    let addressError = document.getElementById('addressErrorMsg');
+    addressError.innerHTML = "Ce champ peut comporter uniquement des chiffres, des lettres et des tirets.";
+    e.preventDefault;
+    }
+  else{
+    return true
+    };
+  };
+  function cityControl(){
+  if(regexAddress.test(inputCity.value) == false){
+   let cityError = document.getElementById('cityErrorMsg');
+   cityError.innerHTML = "Ce champ peut comporter uniquement des chiffres, des lettres et des tirets.";
+   e.preventDefault;
+    }
+  else{
+    return true
+   };
+  };
+  function emailControl(){
+  if(regexEmail.test(inputEmail.value) == false){
+   let emailError = document.getElementById('emailErrorMsg');
+    emailError.innerHTML = "Cette adresse mail n'est pas valide";
+   e.preventDefault;
+    }
+  else{
+    return true
+    };
+  };
 
 
+if(firstNameControl() && lastNameControl() && addressControl() && cityControl() && emailControl() == true){
+localStorage.setItem("Formulaire de contact", JSON.stringify(formValues));
+}
+else{
+  alert("Veuillez bien remplir le formulaire")
+}
 
+//création de l'objet (produits+formulaire) à envoyer au serveur
+const sendToServer = {
+  Basket,
+  formValues,
+}
+console.log('ok',sendToServer)
+// localStorage.setItem('Fiche client', JSON.stringify(sendToServer));
+});
 
-// // vérification des données du formulaire
+// vérification des données du formulaire
 // let form = document.getElementById('Form');
 
-// form.addEventListener('submit', () => {
-//   let input = document.getElementById('firstName');
+// form.addEventListener('submit', function(e) {
+//   let inputFirstName = document.getElementById('firstName');
 //   let regex = /^[a-zA-Z-\s]+$/;
-
-  
-  
-//  if (regex.test(input.value) == false) {
-
+//   console.log(inputFirstName)
+//   if(regex.test(inputFirstName.value) == false){
 //     let firstNameError = documment.getElementById('firstNameErrorMsg');
 //     firstNameError.innerHTML = "Le nom doit comporter uniquement des lettres et des tirets.";
-//     firstNameError.style.color = 'red';
-//     e.preventDefault();
+//     e.preventDefault;
 //   }
 
 // });
 
-//stocker les saisies 
-let btnSendForm = document.getElementById("order")
 
-btnSendForm.addEventListener("click", () => {
-localStorage.setItem("Prénom", document.getElementById("Form"));
 
-});
+
