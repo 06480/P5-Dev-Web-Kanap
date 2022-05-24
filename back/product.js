@@ -51,30 +51,31 @@ function addProductToBastketOnButtonClick(product) {
     let colorOptions = document.getElementById('colors');
     let productQuantity = document.getElementById('quantity');
 
-    let productSpecifications = Object.assign({}, product, {
-      color: `${colorOptions.value}`,
-      quantity: `${productQuantity.value}`,
-    });
+    let productLocal = {
+      id: product._id,
+      nom: product.name,
+      couleur: `${colorOptions.value}`,
+      quantite: `${productQuantity.value}`,
+      image: product.imageUrl,
+    };
 
     // Ajout du produit dans le localStorage quand le panier est vide
     if (localStorageProduct === null) {
-      localStorageProduct = [];
-      localStorageProduct.push(productSpecifications);
-      localStorage.setItem('product', JSON.stringify(localStorageProduct));
+      localStorage.setItem('product', JSON.stringify([productLocal]));
     }
 
     // Ajout du nouveau produit au localStorage quand le panier n'est pas vide
     else {
+      console.log(localStorageProduct);
       for (i = 0; i < localStorageProduct.length; i++) {
-        console.log(localStorageProduct[i]._id);
         if (
-          localStorageProduct[i]._id === product._id &&
-          localStorageProduct[i].color === colorOptions.value
+          localStorageProduct[i].id === product._id &&
+          localStorageProduct[i].couleur === colorOptions.value
         ) {
           // Ajout du produit lorsqu'il est déjà existant dans le panier avec la même couleur
           return (
-            (localStorageProduct[i].quantity = (
-              parseInt(localStorageProduct[i].quantity) +
+            (localStorageProduct[i].quantite = (
+              parseInt(localStorageProduct[i].quantite) +
               parseInt(productQuantity.value)
             ).toString()),
             localStorage.setItem(
@@ -85,9 +86,10 @@ function addProductToBastketOnButtonClick(product) {
           );
         }
       }
+
       // Ajout du produit lorsqu'il est déjà existant dans le panier mais avec une couleur différente ou non existant dans le panier
       return (
-        localStorageProduct.push(productSpecifications),
+        localStorageProduct.push(productLocal),
         localStorage.setItem('product', JSON.stringify(localStorageProduct)),
         (localStorageProduct = JSON.parse(localStorage.getItem('product')))
       );

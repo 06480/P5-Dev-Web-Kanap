@@ -1,41 +1,61 @@
 // Récupération du panier
 let basket = JSON.parse(localStorage.getItem('product'));
 
+(async function () {
+  //Récupération des produits
+  const products = await getProducts();
+
+  //  Affichage des produits
+  displayBasket(basket, products);
+})();
+
+function getProducts() {
+  return fetch('http://localhost:3000/api/products')
+    .then((response) => response.json())
+    .then((products) => products)
+    .catch((error) => alert(error));
+}
+
+function getProductFromId(id, products) {
+  return (products || []).find((product) => product._id === id);
+}
 // Fonction permettant l'affichage du panier
-const displayBasket = (basket) => {
+const displayBasket = (basket, products) => {
   if (basket) {
     cart__items.innerHTML = basket
-      .map(
-        (product, i) => ` 
+      .map((product, i) => {
+        return ` 
     <article class="cart__item" data-id="{product-ID}" data-color="{product-color}">
     <div class="cart__item__img">
-      <img src="${product.imageUrl}" id="productIMG" alt="Photographie d'un ${
-          product.name
+      <img src="${product.image}" id="productIMG" alt="Photographie d'un ${
+          product.nom
         }">
     </div>
     <div class="cart__item__content">
       <div class="cart__item__content__description">
-        <h2 id="title">${product.name}</h2>
-        <p>${product.color}</p>
-        <p id="price-${i}">${product.price * product.quantity}€</p>
+        <h2 id="title">${product.nom}</h2>
+        <p>${product.couleur}</p>
+        <p id="price-${i}" class="allprice">${
+          getProductFromId(product.id, products)?.price * product.quantite
+        }€</p>
       </div>
       <div class="cart__item__content__settings">
         <div class="cart__item__content__settings__quantity">
           <p>Qté : </p>
           <input type="number" id="id-input-test" class="itemQuantity" name="itemQuantity" min="1" max="100" value="${
-            product.quantity
+            product.quantite
           }">
         </div>
         <div class="cart__item__content__settings__delete">
-          <p class="deleteItem" data-id="${product._id}" data-color="${
-          product.color
+          <p class="deleteItem" data-id="${product.id}" data-color="${
+          product.couleur
         }">Supprimer</p>
         </div>
       </div>
     </div>
   </article>
-    `
-      )
+    `;
+      })
       .join('');
 
     // Selection de la quantitée du produit
@@ -47,15 +67,14 @@ const displayBasket = (basket) => {
       // Fonction permettant d'actualiser la quantité d'un produit depuis le panier
       function updateProductQuantity(e) {
         const price = document.getElementById(`price-${i}`);
-        price.innerHTML = `<p id="price-${i}">${
-          product.price * e.target.value
+        price.innerHTML = `<p id="price-${i} class="allprice">${
+          getProductFromId(product.id, products)?.price * e.target.value
         }€</p>`;
 
         // Cas où l'utilisateur ajoute un ou plusieurs produits
-        if (e.target.value > basket[i].quantity) {
-          let newValuePositive = e.target.value - basket[i].quantity;
-          console.log('+', newValuePositive);
-          basket[i].quantity = e.target.value;
+        if (e.target.value > basket[i].quantite) {
+          let newValuePositive = e.target.value - basket[i].quantite;
+          basket[i].quantite = e.target.value;
           for (j = 0; j < newValuePositive; j++) {
             localStorage.setItem('product', JSON.stringify(basket));
             basket = JSON.parse(localStorage.getItem('product'));
@@ -63,10 +82,9 @@ const displayBasket = (basket) => {
         }
 
         // Cas où l'utilisateur retire un ou plusieurs produits
-        if (e.target.value < basket[i].quantity) {
-          let newValueNegative = basket[i].quantity - e.target.value;
-          console.log('-', newValueNegative);
-          basket[i].quantity = e.target.value;
+        if (e.target.value < basket[i].quantite) {
+          let newValueNegative = basket[i].quantite - e.target.value;
+          basket[i].quantite = e.target.value;
           for (j = 0; j < newValueNegative; j++) {
             localStorage.setItem('product', JSON.stringify(basket));
             basket = JSON.parse(localStorage.getItem('product'));
@@ -87,21 +105,22 @@ const deleteProductFromBasket = () => {
   let removeItems = document.querySelectorAll('.deleteItem');
   removeItems.forEach((supprimer) => {
     supprimer.addEventListener('click', () => {
+      console.log('ok');
       let numberOfProductsInBasket = basket.length;
 
       for (i = 0; i < numberOfProductsInBasket; i++) {
         // Cas où il n'y a qu'un seul type de produits dans le panier
-        if (basket[i].quantity >= 1 && numberOfProductsInBasket == 1) {
+        if (basket[i].quantite >= 1 && numberOfProductsInBasket == 1) {
           return (
             localStorage.removeItem('product'), (location.href = 'cart.html')
           );
         }
         // Cas où il y a plus d'un seul type de produits dans le panier
         if (
-          basket[i].quantity >= 1 &&
+          basket[i].quantite >= 1 &&
           numberOfProductsInBasket != 1 &&
-          basket[i]._id == supprimer.dataset.id &&
-          basket[i].color == supprimer.dataset.color
+          basket[i].id == supprimer.dataset.id &&
+          basket[i].couleur == supprimer.dataset.couleur
         ) {
           basket.splice(i, 1);
           localStorage.setItem('product', JSON.stringify(basket));
@@ -116,15 +135,16 @@ const deleteProductFromBasket = () => {
 deleteProductFromBasket();
 
 // Fonction permettant de calculer le prix du panier
-const basketPrice = () => {
+const basketPrice = (i) => {
   let productPrice = [];
   let productQuantityTotal = [];
-
+  const allPrices = document.querySelectorAll('.allprice');
+  console.log('ok3', allPrices);
   let products = JSON.parse(localStorage.getItem('product'));
 
   products.forEach((product) => {
-    productPrice.push(product.price * product.quantity);
-    productQuantityTotal.push(product.quantity);
+    productPrice.push(allPrices.textContent * product.quantite);
+    productQuantityTotal.push(product.quantite);
   });
   totalQuantity.textContent = `${eval(productQuantityTotal.join('+'))}`;
   totalPrice.textContent = `${eval(productPrice.join('+'))}`;
@@ -211,7 +231,7 @@ function sendForm(form) {
     // Création du body de la requête POST
     const body = {
       contact: formContactObject,
-      products: basket.map((product) => product._id),
+      products: basket.map((product) => product.id),
     };
 
     const requestOptions = {
