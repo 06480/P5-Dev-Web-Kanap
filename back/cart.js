@@ -7,6 +7,9 @@ let basket = JSON.parse(localStorage.getItem('product'));
 
   //  Affichage des produits
   displayBasket(basket, products);
+
+  // Ajout des événements permettant la suppression d'un produit du panier
+  deleteProductFromBasket();
 })();
 
 function getProducts() {
@@ -47,9 +50,9 @@ const displayBasket = (basket, products) => {
           }">
         </div>
         <div class="cart__item__content__settings__delete">
-          <p class="deleteItem" data-id="${product.id}" data-color="${
-          product.couleur
-        }">Supprimer</p>
+          <p class="deleteItem" id="${product.id}" data-id="${
+          product.id
+        }" data-couleur="${product.couleur}">Supprimer</p>
         </div>
       </div>
     </div>
@@ -57,6 +60,9 @@ const displayBasket = (basket, products) => {
     `;
       })
       .join('');
+
+    // Affichage du prix du panier initial
+    basketPrice();
 
     // Selection de la quantitée du produit
     let quantityInputs = document.querySelectorAll('.itemQuantity');
@@ -90,22 +96,20 @@ const displayBasket = (basket, products) => {
             basket = JSON.parse(localStorage.getItem('product'));
           }
         }
-        // Affichage du prix du panier initial
+        // Mise à jour du prix du panier
         basketPrice();
       }
     });
   }
 };
-
-// Affichage du panier
-displayBasket(basket);
+//
 
 // Fonction permettant de supprimer un produit du panier
 const deleteProductFromBasket = () => {
   let removeItems = document.querySelectorAll('.deleteItem');
+
   removeItems.forEach((supprimer) => {
     supprimer.addEventListener('click', () => {
-      console.log('ok');
       let numberOfProductsInBasket = basket.length;
 
       for (i = 0; i < numberOfProductsInBasket; i++) {
@@ -131,27 +135,33 @@ const deleteProductFromBasket = () => {
   });
 };
 
-// Ajout des événements permettant la suppression d'un produit du panier
-deleteProductFromBasket();
+const basketDOM = document.querySelector('.cart');
+// Fonction permettant l'affichage du panier vide
+function displayEmptyBasket() {
+  if (basket === null) {
+    basketDOM.style.display = 'none';
+    document.getElementById('basket-title-id').innerHTML =
+      'Votre panier est vide.';
+  }
+}
+displayEmptyBasket();
 
 // Fonction permettant de calculer le prix du panier
-const basketPrice = (i) => {
+const basketPrice = () => {
   let productPrice = [];
   let productQuantityTotal = [];
-  const allPrices = document.querySelectorAll('.allprice');
-  console.log('ok3', allPrices);
   let products = JSON.parse(localStorage.getItem('product'));
 
-  products.forEach((product) => {
-    productPrice.push(allPrices.textContent * product.quantite);
+  products.forEach((product, i) => {
+    const price = parseInt(
+      document.getElementById(`price-${i}`).textContent.slice(0, -1)
+    );
+    productPrice.push(price);
     productQuantityTotal.push(product.quantite);
   });
   totalQuantity.textContent = `${eval(productQuantityTotal.join('+'))}`;
   totalPrice.textContent = `${eval(productPrice.join('+'))}`;
 };
-
-// Mise à jour du prix du panier
-basketPrice();
 
 // Définition des regex
 const inputFirstName = document.getElementById('firstName');
@@ -207,13 +217,13 @@ function sendForm(form) {
       inputAddress,
       regexAddress,
       'addressErrorMsg',
-      'Ce champ peut comporter uniquement des chiffres, des lettres et des tirets.'
+      'Ce champ peut comporter uniquement des chiffres, des lettres, des tirets et pas daccent'
     ) &&
     formInputControl(
       inputCity,
       regexAddress,
       'cityErrorMsg',
-      'Ce champ peut comporter uniquement des chiffres, des lettres et des tirets.'
+      'Ce champ peut comporter uniquement des chiffres, des lettres, des tirets et pas daccent'
     ) &&
     formInputControl(
       inputEmail,
